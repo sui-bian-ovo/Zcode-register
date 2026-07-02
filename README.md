@@ -1,14 +1,30 @@
 # Zcode-register 注册工具使用说明
 
+## 核心思想
+
+`Zcode-register`项目整体上采用自动化的方式实现，涉及到与`Zcode`客户端的操作使用的是键鼠自动化，涉及到浏览器操作的使用的是浏览器自动化。
+
+由于`Zcode`更新速度较快，且市面上有大量的账号管理切换工具，秉承着不重复造轮子的原则，`Zcode-register`只负责注册账号与`Zcode`客户端授权登录。需要与其他账号管理切换工具搭配使用。例如：
+
+- zcode-switcher: https://github.com/git-l-1031/zcode-switcher
+
+由于搭配使用的工具不唯一，因此当`Zcode-register`完成注册与登录授权后，需要人工点击保存账号。以 [zcode-switcher](https://github.com/git-l-1031/zcode-switcher) 为例：
+
+当`Zcode`客户端已经完成了登录后，便可保存当前的账号到本地，便于下次使用时可以不需要登录而直接切换。具体的流程可以在运行**顺序章节**查看。
+
+![Snipaste_2026-07-02_17-11-58](assets/Snipaste_2026-07-02_17-11-58.png)
+
+当然你也可以只使用`Zcode-register`进行注册登录授权，手动管理账号密码。
+
 ## 注意事项
 
-项目整体上采用自动化的方式实现，涉及到与`Zcode`客户端的操作使用的是键鼠自动化，涉及到浏览器操作的使用的是浏览器自动化。
+当登录开始时，点击`连接Z.ai继续使用`按钮，`Zcode`客户端会生成登录授权链接并自动打开浏览器，而该链接里面的参数在登陆成功后授权时`Zcode`客户端需要检查是否一直，因此程序使用`mitm`中间人攻击的方式监听电脑的所有请求，以获取到该链接。
 
-当点击`连接Z.ai继续使用`按钮时，`Zcode`客户端会生成登录授权链接并自动打开浏览器，而该链接里面的参数在登陆成功后授权时`Zcode`客户端需要检查是否一直，因此程序使用`mitm`中间人攻击的方式监听电脑的所有请求，以获取到该链接。
+![img.png](assets/image-20260629193127214-17829864004051.png)
 
-![img.png](https://free.boltp.com/2026/07/02/6a460897d20ec.webp)
+在 [releases]([https://github.com/sui-bian-ovo/Zcode-register/releases/) 下载程序后，请务必将程序完整解压到 `C:\dist` 目录，确保 `Zcode-Register.exe` 的运行路径固定为 `C:\dist\Zcode-Register.exe`，也不要随意更改例如`venv`文件夹的名字。这是因为`mitmproxy.exe`中涉及的 Python 文件路径已在打包时写死，如果路径发生变化，会导致`mitmproxy`无法正确加载脚本，无法拦截到授权链接。
 
-在[releases]([https://github.com/sui-bian-ovo/Zcode-register/releases/)下载程序后，请务必将程序完整解压到 `C:\dist` 目录，确保 `Zcode-Register.exe` 的运行路径固定为 `C:\dist\Zcode-Register.exe`，也不要随意更改例如`venv`文件夹的名字。这是因为`mitmproxy.exe`中涉及的 Python 文件路径已在打包时写死，如果路径发生变化，会导致`mitmproxy`无法正确加载脚本，无法拦截到授权链接。
+程序在点击`Zcode`客户端的`连接Z.ai继续使用`步骤时会使用鼠标，此时不能使用电脑，也不要让任何软件置顶且占用`Zcode`客户端的`连接Z.ai继续使用`按钮的位置，否则会因为无法点到按钮导致等不到 OAuth 授权地址而报错。不管怎样，程序在任何一个流程报错，都会重新开始新的流程。
 
 运行前确认当前`ZCode`本地账号不需要保留。程序启动注册前会删除`ZCode`配置目录下的`credentials.json`与`config.json`。这是为了让`ZCode`进入干净的登录状态，打开客户端直接是登录页面。
 
@@ -41,9 +57,7 @@ mitm 中间人攻击捕获 chat.z.ai 的 OAuth 授权地址
     ↓
 打开回调地址，让 ZCode 写入本地登录配置
     ↓
-读取 credentials.json 和 config.json
-    ↓
-导出结果
+等待人工接管，保存当前账号
 ```
 
 ## 配置文件
@@ -94,16 +108,24 @@ mailnest:
 
 运行 `run_mitm.bat`，程序会自动启动本地`mitmproxy`代理服务，监听配置项中`mitm.port` 对应的端口。在`Windows`的设置中，配置代理端口为`mitm.port` 对应的端口，使得`Windows`中的网络请求经过`mitmproxy `代理。
 
-如果是第一次使用，需要安装系统证书：在浏览器中访问 `http://mitm.it` 页面，在该页面下载对应`Windows`平台的证书并进行安装，安装时选择“受信任的根证书颁发机构”，完成后关闭浏览器并返回程序窗口即可，证书安装完成后`mitmproxy`才能正常解密 HTTPS 流量并捕获 OAuth 授权请求。
+如果是第一次使用，需要安装系统证书：在浏览器中访问 [http://mitm.it](http://mitm.it) 页面，在该页面下载对应`Windows`平台的证书并进行安装，安装时选择“受信任的根证书颁发机构”，完成后关闭浏览器并返回程序窗口即可，证书安装完成后`mitmproxy`才能正常解密 HTTPS 流量并捕获 OAuth 授权请求。
 
 然后再启动主程序`Zcode-register-v1.0.exe`。 会提示：
 
 ```text
 程序运行时会删除 zcode 登录凭证 请务必确认没有重要资产
-按任意键开始 否则请直接关闭:
+按回车键开始 否则请直接关闭:
 ```
 
-确认可以清理当前 ZCode 本地登录状态后，再按任意键继续。
+确认可以清理当前`ZCode`本地登录状态后，再按任意键继续。
+
+当`Zcode-register`完成登录与授权后，会摊下来等待用户进行账号保存，当保存后按回车键即可开始下一次的注册与授权。注意 [zcode-switcher](https://github.com/git-l-1031/zcode-switcher) 要刷新后再进行保存。
+
+![image-20260702184318521](assets/image-20260702184318521.png)
+
+以下是一次完整流程的输出截图：
+
+![image-20260702184119533](assets/image-20260702184119533.png)
 
 ## 输出文件
 
@@ -119,17 +141,6 @@ mailnest:
 
 这是最直接的结果文件。
 
-### zcode_switcher/
-
-本程序适配[zcode-account-switcher](https://github.com/smartlizi/zcode-account-switcher)项目中的程序，可以在`zcode-account-switcher`一键导入`zcode_switcher`文件夹中的结果。
-
-```text
-zcode_switcher/
-└─ xxx@example.com.zcas.json
-```
-
-每个邮箱对应一个 `.zcas.json` 文件。
-
 ### logs/
 
 程序日志会写到这里：
@@ -144,7 +155,3 @@ logs/
 ### mitm_log.txt
 
 `run_mitm.exe` 会把捕获到的 OAuth 授权地址写入这个文件。主程序会从这里读取最新的授权地址。
-
-## 停止程序
-
-`main.exe` 默认是循环运行的。一次成功后，会继续进入下一次注册。程序启动后，会创建`is_stop_signal.txt`文件。需要停止时，原则上不要强制杀进程，修改`is_stop_signal.txt`里面的值为`1`即可。
