@@ -6,7 +6,7 @@
 
 当点击`连接Z.ai继续使用`按钮时，`Zcode`客户端会生成登录授权链接并自动打开浏览器，而该链接里面的参数在登陆成功后授权时`Zcode`客户端需要检查是否一直，因此程序使用`mitm`中间人攻击的方式监听电脑的所有请求，以获取到该链接。
 
-![BQACAgUAAyEGAASHRsPbAAEWewhqRgbSLJUjJ6MB72qVNrbcXCpANAACeykAAoFqMFZyvYonjB026DwE.png](https://img.remit.ee/api/file/BQACAgUAAyEGAASHRsPbAAEWewhqRgbSLJUjJ6MB72qVNrbcXCpANAACeykAAoFqMFZyvYonjB026DwE.png)
+![img.png](https://free.boltp.com/2026/07/02/6a460897d20ec.webp)
 
 在[releases]([https://github.com/sui-bian-ovo/Zcode-register/releases/)下载程序后，请务必将程序完整解压到 `C:\dist` 目录，确保 `Zcode-Register.exe` 的运行路径固定为 `C:\dist\Zcode-Register.exe`，也不要随意更改例如`venv`文件夹的名字。这是因为`mitmproxy.exe`中涉及的 Python 文件路径已在打包时写死，如果路径发生变化，会导致`mitmproxy`无法正确加载脚本，无法拦截到授权链接。
 
