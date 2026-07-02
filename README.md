@@ -154,4 +154,4 @@ logs/
 
 ### mitm_log.txt
 
-`run_mitm.exe` 会把捕获到的 OAuth 授权地址写入这个文件。主程序会从这里读取最新的授权地址。
+`run_mitm.bat` 会把捕获到的 OAuth 授权地址写入这个文件。主程序会从这里读取最新的授权地址。
