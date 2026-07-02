@@ -121,7 +121,7 @@ mailnest:
 
 ### zcode_switcher/
 
-本程序适配https://github.com/smartlizi/zcode-account-switcher项目中的程序，可以在`zcode-account-switcher`一键导入`zcode_switcher`文件夹中的结果。
+本程序适配[zcode-account-switcher](https://github.com/smartlizi/zcode-account-switcher)项目中的程序，可以在`zcode-account-switcher`一键导入`zcode_switcher`文件夹中的结果。
 
 ```text
 zcode_switcher/
