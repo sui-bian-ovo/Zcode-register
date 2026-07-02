@@ -10,7 +10,7 @@
 
 由于搭配使用的工具不唯一，因此当`Zcode-register`完成注册与登录授权后，需要人工点击保存账号。以 [zcode-switcher](https://github.com/git-l-1031/zcode-switcher) 为例：
 
-当`Zcode`客户端已经完成了登录后，便可保存当前的账号到本地，便于下次使用时可以不需要登录而直接切换。具体的流程可以在运行**顺序章节**查看。
+当`Zcode`客户端已经完成了登录后，便可保存当前的账号到本地，便于下次使用时可以不需要登录而直接切换。具体的流程可以在**运行顺序**章节查看。
 
 ![Snipaste_2026-07-02_17-11-58](assets/Snipaste_2026-07-02_17-11-58.png)
 
@@ -93,7 +93,7 @@ mailnest:
 
 - `mitm.port` 是抓取 OAuth 授权地址用的本地代理端口。具体见下一节中的说明。
 - `zcode`
-  - ``zcode.process_name` 用来识别并关闭已有的`ZCode`进程，避免旧登录状态影响键鼠自动化。
+  - `zcode.process_name` 用来识别并关闭已有的`ZCode`进程，避免旧登录状态影响键鼠自动化。
   - `zcode.window_name` 用来定位`ZCode`授权窗口，程序会自动点击窗口里的授权按钮。
   - `zcode.folder_path` 是`ZCode`保存 `credentials.json` 和 `config.json` 的目录。程序开始前会输出授权凭证，使得打开`Zcode`客户端时显示登录页面；注册成功后会读取这里面的文件并导出结果。
 - `mailnest`
