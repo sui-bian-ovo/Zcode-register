@@ -4,31 +4,68 @@
 
 - `Zcode-register-v2.0 [20260708]`：网站的验证码升级，程序自动过验证码的难度极大，因此使用半自动的方式，当验证码出现时，程序会开始等待人工拖动，并每`3`秒检查一次结果，当检查到验证码已完成后，便会自动往下进行。也就是说，需要人工拖动滑块，直达网页上出现**验证通过**即可。注意不需要人工点击登录按钮，程序会自动进行。
 
-![image-20260708180502398](assets/image-20260708180502398.png)
+<p align="center">   <img src="assets/image-20260708180502398.png" alt="20260708180502398" > </p>
 
-![image-20260708180341813](assets/image-20260708180341813.png)
+<p align="center">   <img src="assets/image-20260708180341813.png" alt="20260708180341813" > </p>
 
 ## 核心思想
 
+### 概述
+
 `Zcode-register`项目整体上采用自动化的方式实现，涉及到与`Zcode`客户端的操作使用的是键鼠自动化，涉及到浏览器操作的使用的是浏览器自动化。
 
-由于`Zcode`更新速度较快，且市面上有大量的账号管理切换工具，秉承着不重复造轮子的原则，`Zcode-register`只负责注册账号与`Zcode`客户端授权登录。需要与其他账号管理切换工具搭配使用。例如：
-
-- zcode-switcher: https://github.com/git-l-1031/zcode-switcher
-
-由于搭配使用的工具不唯一，因此当`Zcode-register`完成注册与登录授权后，需要人工点击保存账号。以 [zcode-switcher](https://github.com/git-l-1031/zcode-switcher) 为例：
+由于`Zcode`更新速度较快，且市面上有大量的账号管理切换工具，秉承着不重复造轮子的原则，`Zcode-register`只负责注册账号与`Zcode`客户端授权登录。需要与其他**任意一个**账号管理切换工具搭配使用。由于搭配使用的工具不唯一，因此当`Zcode-register`完成注册与登录授权后，需要人工点击保存账号。以 [zcode-switcher](https://github.com/git-l-1031/zcode-switcher) 为例：
 
 当`Zcode`客户端已经完成了登录后，便可保存当前的账号到本地，便于下次使用时可以不需要登录而直接切换。具体的流程可以在**运行顺序**章节查看。
 
-![Snipaste_2026-07-02_17-11-58](assets/Snipaste_2026-07-02_17-11-58.png)
+<p align="center">   <img src="assets/Snipaste_2026-07-02_17-11-58.png" alt="Snipaste_2026-07-02_17-11-58" > </p>
 
 当然你也可以只使用`Zcode-register`进行注册登录授权，手动管理账号密码。
+
+### 推荐搭配使用
+
+以下软件都可以和`Zcode-register`搭配使用，任选其一即可。
+
+#### git-l-1031/zcode-switcher
+
+- github 主页链接：https://github.com/git-l-1031/zcode-switcher
+- 截图：
+
+<p align="center">   <img src="assets/image-20260715132533097.png" alt="20260715132533097" > </p>
+
+#### jinpeng-vnode/zcode-account-switcher
+
+- github 主页链接：https://github.com/jinpeng-vnode/zcode-account-switcher
+- 截图：
+
+<p align="center">   <img src="assets/image-20260715132811689.png" alt="20260715132811689" > </p>
+
+#### smartlizi/zcode-account-switcher
+
+- github 主页链接：https://github.com/smartlizi/zcode-account-switcher
+- 截图：
+
+<p align="center">   <img src="assets/image-20260715133606441.png" alt="20260715133606441" > </p>
+
+#### FedyaLight/zcode-account-switcher [支持 macOS]
+
+- github 主页链接：https://github.com/FedyaLight/zcode-account-switcher
+- 截图：
+
+<p align="center">   <img src="https://github.com/FedyaLight/zcode-account-switcher/raw/main/docs/screenshot.png" alt="zcode-account-switcher" > </p>
+
+#### arbiswork-boop/zcode-switcher-account
+
+- github 主页链接：https://github.com/arbiswork-boop/zcode-switcher-account
+- 截图：
+
+<p align="center">   <img src="https://github.com/arbiswork-boop/zcode-switcher-account/raw/main/docs/screenshots/main.jpg" alt="zcode-switcher-account" > </p>
 
 ## 注意事项
 
 当登录开始时，点击`连接Z.ai继续使用`按钮，`Zcode`客户端会生成登录授权链接并自动打开浏览器，而该链接里面的参数在登陆成功后授权时`Zcode`客户端需要检查是否一直，因此程序使用`mitm`中间人攻击的方式监听电脑的所有请求，以获取到该链接。
 
-![img.png](assets/image-20260629193127214-17829864004051.png)
+<p align="center">   <img src="assets/image-20260629193127214-17829864004051.png" alt="17829864004051" > </p>
 
 在 [releases]([https://github.com/sui-bian-ovo/Zcode-register/releases/) 下载程序后，请务必将程序完整解压到 `C:\dist` 目录，确保 `Zcode-Register.exe` 的运行路径固定为 `C:\dist\Zcode-Register.exe`，也不要随意更改例如`venv`文件夹的名字。这是因为`mitmproxy.exe`中涉及的 Python 文件路径已在打包时写死，如果路径发生变化，会导致`mitmproxy`无法正确加载脚本，无法拦截到授权链接。
 
@@ -118,7 +155,7 @@ mailnest:
 
 如果是第一次使用，需要安装系统证书：在浏览器中访问 [http://mitm.it](http://mitm.it) 页面，在该页面下载对应`Windows`平台的证书并进行安装，安装时选择“受信任的根证书颁发机构”，完成后关闭浏览器并返回程序窗口即可，证书安装完成后`mitmproxy`才能正常解密 HTTPS 流量并捕获 OAuth 授权请求。
 
-然后再启动主程序`Zcode-register-v2.0.exe`。 会提示：
+然后再启动主程序`Zcode-register-v1.0.exe`。 会提示：
 
 ```text
 程序运行时会删除 zcode 登录凭证 请务必确认没有重要资产
@@ -127,13 +164,13 @@ mailnest:
 
 确认可以清理当前`ZCode`本地登录状态后，再按任意键继续。
 
-当`Zcode-register`完成登录与授权后，会摊下来等待用户进行账号保存，当保存后按回车键即可开始下一次的注册与授权。注意 [zcode-switcher](https://github.com/git-l-1031/zcode-switcher) 要刷新后再进行保存。
+当`Zcode-register`完成登录与授权后，会停下来等待用户进行账号保存，当保存后按回车键即可开始下一次的注册与授权。注意 [zcode-switcher](https://github.com/git-l-1031/zcode-switcher) 要刷新后再进行保存。
 
-![image-20260702184318521](assets/image-20260702184318521.png)
+<p align="center">   <img src="assets/image-20260702184318521.png" alt="20260702184318521" > </p>
 
 以下是一次完整流程的输出截图：
 
-![image-20260702184119533](assets/image-20260702184119534.png)
+<p align="center">   <img src="assets/image-20260702184119534.png" alt="20260702184119534" > </p>
 
 ## 输出文件
 
